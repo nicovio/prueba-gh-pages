@@ -1,21 +1,28 @@
 <script>
-  import { onMount } from "svelte";
-
   let jugador;
+  let textoBusqueda;
 
-  async function getPlayer(nombre, apellido) {
-    jugador = await fetch(
-      `https://www.thesportsdb.com/api/v1/json/1/searchplayers.php?p=${nombre}%20${apellido}`
+  async function buscarJugador() {
+    const response = await fetch(
+      `https://www.thesportsdb.com/api/v1/json/1/searchplayers.php?p=${textoBusqueda}`
     );
-  }
 
-  onMount(getPlayer("lionel", "messi"));
+    const {
+      player: [jugadorEncontrado],
+    } = await response.json();
+
+    jugador = jugadorEncontrado;
+	console.log(jugador)
+  }
 </script>
 
 <main>
+  <h4>Buscar jugador</h4>
+  <input bind:value={textoBusqueda} type="text" />
+  <button on:click={buscarJugador}>Buscar</button>
   {#if jugador}
     <h1>Nombre: {jugador.strPlayer}</h1>
-    <h1>Equipo actual: {jugador.strTeam}</h1>
+    <h1>Equipo actual: {jugador.strTeam != "_Retired Soccer" ? jugador.strTeam : "-"}</h1>
   {/if}
 </main>
 
