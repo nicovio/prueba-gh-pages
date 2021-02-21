@@ -1,10 +1,12 @@
 <script>
+  import { API_URL } from "../src/constants";
+
   let jugador;
   let textoBusqueda;
 
   async function buscarJugador() {
     const response = await fetch(
-      `https://www.thesportsdb.com/api/v1/json/1/searchplayers.php?p=${textoBusqueda}`
+      `${API_URL}/searchplayers.php?p=${textoBusqueda}`
     );
 
     const {
@@ -12,17 +14,21 @@
     } = await response.json();
 
     jugador = jugadorEncontrado;
-	console.log(jugador)
   }
 </script>
 
 <main>
+  <h2>Ambiente: {process.env.isProd ? "Producción" : "Desarrollo"}</h2>
   <h4>Buscar jugador</h4>
   <input bind:value={textoBusqueda} type="text" />
   <button on:click={buscarJugador}>Buscar</button>
   {#if jugador}
     <h1>Nombre: {jugador.strPlayer}</h1>
-    <h1>Equipo actual: {jugador.strTeam != "_Retired Soccer" ? jugador.strTeam : "-"}</h1>
+    <h1>
+      Equipo actual: {jugador.strTeam != "_Retired Soccer"
+        ? jugador.strTeam
+        : "-"}
+    </h1>
   {/if}
 </main>
 
