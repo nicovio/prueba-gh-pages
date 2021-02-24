@@ -1,1 +1,4 @@
-export const API_URL = process.env.isProd ? `https://www.thesportsdb.com/api/v1/json/1` : ''
+
+export const isProduction = process.env.isProd
+
+export const API_URL = isProduction ? `https://www.thesportsdb.com/api/v1/json/1` : ''

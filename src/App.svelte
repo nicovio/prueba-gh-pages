@@ -1,8 +1,11 @@
 <script>
+  import { Link, Router, useNavigate } from "svelte-navigator";
   import { API_URL } from "../src/constants";
 
   let jugador;
   let textoBusqueda;
+
+  const navigate = useNavigate();
 
   async function buscarJugador() {
     const response = await fetch(
@@ -15,13 +18,17 @@
 
     jugador = jugadorEncontrado;
   }
+
+  function navegarAAbout() {
+    navigate("/about");
+  }
 </script>
 
 <main>
-  <h2>Ambiente: {process.env.isProd ? "Producción" : "Desarrollo"}</h2>
+  <h3>Ambiente: {process.env.isProd ? "Producción" : "Desarrollo"}</h3>
   <h4>Buscar jugador</h4>
   <input bind:value={textoBusqueda} type="text" />
-  <button on:click={buscarJugador}>Buscar</button>
+  <button disabled={!textoBusqueda} on:click={buscarJugador}>Buscar</button>
   {#if jugador}
     <h1>Nombre: {jugador.strPlayer}</h1>
     <h1>
@@ -30,6 +37,9 @@
         : "-"}
     </h1>
   {/if}
+  <div>
+    <button on:click={navegarAAbout}>About</button>
+  </div>
 </main>
 
 <style>
